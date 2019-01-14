@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const moment = require('moment');
+
 const GoogleSpreadsheet = require('google-spreadsheet');
 const { RTMClient } = require('@slack/client');
 const { Document } = require('./sheets');
@@ -21,9 +23,8 @@ rtm.on('message', async function(msg) {
         && msg.text.includes('daily stats')
         ) {
             console.log('triggered!');
-
             const stats = await swoleSheet.getDailyStats();
-            rtm.sendMessage(JSON.stringify(stats), WHEYMEN_CHANNEL);
+            rtm.sendMessage(formatMsg(stats), WHEYMEN_CHANNEL);
     } else if (msg.channel === WHEYMEN_CHANNEL 
         && msg.type === 'message' 
         && msg.text.includes('gj swolefather')) {
@@ -31,3 +32,25 @@ rtm.on('message', async function(msg) {
             rtm.sendMessage('thanks brah', WHEYMEN_CHANNEL);
     }
 });
+
+function formatMsg(statsJson) {
+    let formattedStr = '';
+
+    const date = moment().format('MM/DD/YYYY');
+    formattedStr += 'Latest stats as of *'+  date + '*\n\n';
+
+    for (const key in statsJson) {
+        let blah = '';
+        const user = `*${key.toUpperCase()}*\n`;
+        blah += user;
+
+        for (const statKey in statsJson[key]) {
+            const statVal = statsJson[key][statKey];
+            blah += `- ${statKey}: ${statVal}\n`;
+        }
+
+        formattedStr += blah + '\n';
+    }
+
+    return formattedStr;
+}
