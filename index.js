@@ -13,16 +13,21 @@ const swoleSheet = new Document(doc);
 rtm.start();
 
 console.log('listening to slack...');
-const channel = 'CAJVD21MJ';
+const WHEYMEN_CHANNEL = 'CAJVD21MJ';
 rtm.on('message', async function(msg) {
     console.log(msg.text);
-    if (msg.channel === channel 
+    if (msg.channel === WHEYMEN_CHANNEL 
         && msg.type === 'message' 
         && msg.text.includes('daily stats')
         ) {
             console.log('triggered!');
 
             const stats = await swoleSheet.getDailyStats();
-            rtm.sendMessage(JSON.stringify(stats), channel);
+            rtm.sendMessage(JSON.stringify(stats), WHEYMEN_CHANNEL);
+    } else if (msg.channel === WHEYMEN_CHANNEL 
+        && msg.type === 'message' 
+        && msg.text.includes('gj swolefather')) {
+    
+            rtm.sendMessage('thanks brah', WHEYMEN_CHANNEL);
     }
 });
