@@ -1,0 +1,29 @@
+{
+  "name": "swollelujah",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SapphireLabs/swollelujah.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SapphireLabs/swollelujah/issues"
+  },
+  "homepage": "https://github.com/SapphireLabs/swollelujah#readme",
+  "dependencies": {
+    "@slack/client": "^4.8.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "google-spreadsheet": "^2.0.6",
+    "moment": "^2.23.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
