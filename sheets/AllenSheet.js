@@ -1,3 +1,4 @@
+const moment = require('moment');
 const AbstractSheet = require('./AbstractSheet');
 
 module.exports = class AllenSheet extends AbstractSheet {
@@ -21,6 +22,8 @@ module.exports = class AllenSheet extends AbstractSheet {
             squat: 'squat5x5',
             row: 'barbellrow5x5',
         }
+
+        this.rows_ = [];
     }
 
    async getLatestStats() {
@@ -31,13 +34,10 @@ module.exports = class AllenSheet extends AbstractSheet {
         return this.stats_;
     }
 
-    // TODO: take subset of the raw row data 
-    transform(rawRow) {}
-
     // i dont even know what this is doing anymore
     async fetchData() {
         const rows = await this.fetchSheetRows_();
-        console.log()
+        this.rows_ = rows;
 
         for (const row of rows) {
             this.data_[row['date']] = row;
@@ -48,6 +48,44 @@ module.exports = class AllenSheet extends AbstractSheet {
                     this.stats_[key] = Number(row[rawKey]);
                 }
             }
+        }
+        return;
+    }
+
+    async getTodayRow() {
+        if (!this.hasData()) {
+            await this.fetchData();
+        }
+
+        const today = moment().format('MM/DD/YYYY');
+
+        let i = 0;
+        for (const row of this.rows_) {
+            if (row.date === today) {
+                console.log(row);
+                return row;
+            }
+        }
+
+        throw "THERE IS NO ROW FOR TODAY ON " + today;
+    }
+    
+    async setTodayRow(opts) {
+        const optsMap = {
+            date: '01/15/2019',
+            squat5x5: '140',
+            bench5x5: '115',
+            barbellrow5x5: '75',
+            ohp5x5: '',
+            deadlift1x5: '',
+            weight: '177.6',
+            irontemple: 'TRUE',
+            ketodiet: 'TRUE',
+            noalcohol: 'TRUE',
+            nosmoke: 'TRUE',
+            flossbrush2x: '',
+            notes: '',
+            improvementideas: ''
         }
     }
 }

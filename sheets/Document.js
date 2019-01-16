@@ -16,7 +16,26 @@ module.exports = class Document {
         this.sheetByName_ = {};
     }
 
+    async auth_() {
+        const useServiceAccountAuthAsync = promisify(this.document_.useServiceAccountAuth);
+
+        try {
+            const creds = {
+                'client_email': process.env.GOOGLE_CLIENT_EMAIL,
+                'private_key': process.env.GOOGLE_PRIVATE_KEY
+            }
+            await useServiceAccountAuthAsync(creds);
+        } catch( e) {
+            console.log('auth error', e.message);
+        }
+    }
+
     async fetchData() {
+        try {
+            await this.auth_();
+        } catch(e) {
+            // suppress
+        }
         const getInfoAsync = promisify(this.document_.getInfo);
 
         let result;
