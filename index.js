@@ -36,6 +36,10 @@ function startBot() {
         
                 rtm.sendMessage('thanks brah', WHEYMEN_CHANNEL);
         }
+
+        if (msg && msg.text && msg.text.toLowerCase().includes('frig luse')) {
+            rtm.sendMessage('FRIG LUSE!', WHEYMEN_CHANNEL);
+        }
     });
 }
 
